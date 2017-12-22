@@ -1,9 +1,29 @@
-Team Tha Swami: Jack Cruse, Grace Cuenca, Naotaka Kinoshita
-Description: Whack-a-mole / Memory Matrix
-User Interface:
+Team Tha Swami: Jack Cruse, Grace Cuenca and Naotaka Kinoshita
+
+Description: Mini Arcade with Whack-a-mole / Memory Matrix (MVP), Tetris if time
+
+User Interface: The terminal
+
 Technical Design:
-- How you will be using the topics covered in class in the project.
-- How you are breaking down the project and who is responsible for which parts.
-- What data structures you will be using and how.
-- What algorithms you will be using, and how.
+Topics covered in class:
+- networking to connect to multiple computers
+- processes (ex. forking) to pass repeated child processes to other computers
+- files because sockets are files
+- signals to end/start processes on all connected computers
+
+Project Breakdown:
+- Phase I: Whack-a-mole Phase
+  - adding this game is our project at its most basic state
+- Phase II: Scrolling Text
+  - after implementing whack-a-mole, sending text through connected computers should come naturally
+- Phase III: Memory Matrix
+  - Connected computers randomly change color and user must press them in order
+- Phase IV: Tetris
+
+Data Structures:
+- home-made structs for sending information
+
+Algorithms:
+- random number generator
+
 Timeline:
