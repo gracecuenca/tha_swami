@@ -27,3 +27,8 @@ Algorithms:
 - random number generator
 
 Timeline:
+- 12/27-29: Finalize design and team roles
+- 1/5: Basic program for changing colors in terminal (without networking)
+- 1/12: Implement scrolling text (without networking)
+- 1/19: Implement networking on phases I and II, if time, begin working on phase III.
+- 1/26: Finish networking and phase III if possible. If phase III is completed by this time, try to do phase IV (highly unlikely)
