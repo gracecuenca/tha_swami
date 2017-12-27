@@ -7,6 +7,7 @@ User Interface: The terminal
 Technical Design:
 Topics covered in class:
 - networking to connect to multiple computers
+- server/client connections within network
 - processes (ex. forking) to pass repeated child processes to other computers
 - files because sockets are files
 - signals to end/start processes on all connected computers
@@ -22,9 +23,18 @@ Project Breakdown:
 
 Data Structures:
 - home-made structs for sending information
+struct message {
+  //tbd
+}
 
 Algorithms:
-- random number generator
+- random number generator (randomly send data to other comps in network)
+
+Team Roles:
+EVERYONE WORKING ON EVERY PHASE!!
+- Grace: networking, setting up server, signals
+- Jack: networking, client (sending back to server), processes
+- Naotaka: networking, client (sending back to server), processes
 
 Timeline:
 - 12/27-29: Finalize design and team roles
