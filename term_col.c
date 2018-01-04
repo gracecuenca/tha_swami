@@ -1,39 +1,32 @@
-#include <sys/ioctl.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define RESET   "\x1b[0m"
-
-int rows();
-int cols();
-int print_change();
+#include "headers.h"
 
 int rows() {
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-  printf("number of lines:%d\n", w.ws_row);
+  //printf("number of lines:%d\n", w.ws_row);
   return w.ws_row;
 }
 
 int cols() {
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-  printf("number of cols: %d\n", w.ws_col);
+  //printf("number of cols: %d\n", w.ws_col);
   return w.ws_col;
+}
+
+int term_size(){
+  return rows() * cols();
+}
+
+void clearscreen(){
+  printf(CLEAR);
 }
 
 int print_change(char * base) {
   int row, col, i;
   row = rows();
   col = cols();
+  //clearscreen(row);
   printf("col: %d\n", col);
   printf("a");
   char change_color[1000];
@@ -53,7 +46,28 @@ int print_change(char * base) {
   return 0;
 }
 
+void change_color(char * color){
+  int i;
+  clearscreen();
+  int size = term_size();
+  char screen[size];
+  for(i = 0; i < size; i++){
+    strcat(screen, " ");
+  }
+  printf(color);
+  printf(screen);
+  printf(RESET);
+}
+
 int main() {
-  print_change("RED");
+  //print_change(RED);
+  //print_change(RESET);
+  change_color(GREY);
+  change_color(RED);
+  change_color(GREEN);
+  change_color(YELLOW);
+  change_color(BLUE);
+  change_color(CYAN);
+  change_color(MAGENTA);
   return 0;
 }
