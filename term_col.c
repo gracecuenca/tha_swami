@@ -46,7 +46,7 @@ int print_change(char * base) {
   return 0;
 }
 
-int change_color(char * color){
+void change_color(char * color){
   int i;
   clearscreen();
   int size = term_size();
@@ -59,7 +59,7 @@ int change_color(char * color){
   printf("%s", screen);
   printf(RESET);
   free(screen);
-  return 0;
+  screen = NULL;
 }
 
 int main() {
