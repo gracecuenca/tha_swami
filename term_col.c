@@ -50,13 +50,15 @@ void change_color(char * color){
   int i;
   clearscreen();
   int size = term_size();
-  char screen[size];
+  char * screen;
+  screen = (char*)malloc(size);
   for(i = 0; i < size; i++){
     strcat(screen, " ");
   }
-  printf("%s",color);
-  printf("%s",screen);
+  printf("%s", color);
+  printf("%s", screen);
   printf(RESET);
+  free(screen);
 }
 
 int main() {
