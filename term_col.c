@@ -54,8 +54,8 @@ void change_color(char * color){
   for(i = 0; i < size; i++){
     strcat(screen, " ");
   }
-  printf(color);
-  printf(screen);
+  printf("%s",color);
+  printf("%s",screen);
   printf(RESET);
 }
 
