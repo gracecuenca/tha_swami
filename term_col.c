@@ -47,14 +47,16 @@ int print_change(char * base) {
 }
 
 void change_color(char * color){
-  int i;
   clearscreen();
+  int i;
   int size = term_size();
   char * screen;
-  screen = (char*)malloc(size);
+  screen = malloc(size);
+
   for(i = 0; i < size; i++){
     strcat(screen, " ");
   }
+  
   printf("%s", color);
   printf("%s", screen);
   printf(RESET);
