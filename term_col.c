@@ -46,7 +46,7 @@ int print_change(char * base) {
   return 0;
 }
 
-void change_color(char * color){
+char * change_color(char * color){
   clearscreen();
   int i;
   int size = term_size();
@@ -56,23 +56,29 @@ void change_color(char * color){
   for(i = 0; i < size; i++){
     strcat(screen, " ");
   }
-  
   printf("%s", color);
   printf("%s", screen);
   printf(RESET);
-  free(screen);
-  screen = NULL;
+  return screen;
 }
 
 int main() {
+  char * color;
   //print_change(RED);
   //print_change(RESET);
-  change_color(GREY);
-  change_color(RED);
-  change_color(GREEN);
-  change_color(YELLOW);
-  change_color(BLUE);
-  change_color(CYAN);
-  change_color(MAGENTA);
+  color = change_color(GREY);
+  sleep(3);
+  color = change_color(RED);
+  sleep(3);
+  color = change_color(GREEN);
+  sleep(3);
+  color = change_color(YELLOW);
+  sleep(3);
+  color = change_color(BLUE);
+  sleep(3);
+  color = change_color(CYAN);
+  sleep(3);
+  color = change_color(MAGENTA);
+  free(color);
   return 0;
 }
