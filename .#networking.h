@@ -1,1 +1,0 @@
-kinoshita@doraemon.localdomain.59
