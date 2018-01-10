@@ -3,6 +3,19 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <errno.h>
+
+#ifndef NETWORKING_H
+#define NETWORKING_H
+
+#define BUFFER_SIZE 256
+#define PORT "9001"
+#define TEST_IP "127.0.0.1"
 
 #define RED     "\x1b[41m"
 #define GREEN   "\x1b[42m"
@@ -14,8 +27,15 @@
 #define RESET   "\x1b[0m"
 #define CLEAR   "\x1b[2J"
 
+void error_check(int i, char *s);
+int server_setup();
+int server_connect(int sd);
+int client_setup(char * server);
+
 int rows();
 int cols();
 int term_size();
-int print_change();
+char * change_color(char *);
 void clearscreen();
+
+#endif

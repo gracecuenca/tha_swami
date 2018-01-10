@@ -38,7 +38,7 @@ char * change_color(char * color){
   printf(RESET);
   return screen;
 }
-
+/***
 int main() {
   char * color;
   //print_change(RED);
@@ -59,3 +59,4 @@ int main() {
   free(color);
   return 0;
 }
+***/

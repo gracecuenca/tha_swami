@@ -12,3 +12,9 @@ Fixed double free error, not 100% sure if printing colors correctly, requires mo
 
 jackC - 2018-01-09 15:25
 Fixed the error in which the screen did not print the desired color to the entire screen. Works on school machines now.
+
+naotakaK -- 2018-01-09 19:59
+Updated networking files. To do stuff:
+- for some reason headers.h isn't working correctly and there is a compile error when trying to do make client
+- not sure if the way I did color send/recieve is correct
+

@@ -1,4 +1,4 @@
-#include "networking.h"
+#include "headers.h"
 
 void process(char *s);
 void subserver(int from_client);
@@ -24,10 +24,12 @@ void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
 
   while (read(client_socket, buffer, sizeof(buffer))) {
-
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
-    process(buffer);
-    write(client_socket, buffer, sizeof(buffer));
+    //process(buffer);
+
+    write(client_socket, RED, sizeof(char *));
+    //write(client_socket, BLUE, sizeof(char *));
+
   }//end read loop
   close(client_socket);
   exit(0);
