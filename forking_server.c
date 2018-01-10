@@ -13,10 +13,12 @@ int main() {
 
     int client_socket = server_connect(listen_socket);
     f = fork();
-    if (f == 0)
+    if (f == 0) {
       subserver(client_socket);
-    else
+    }
+    else {
       close(client_socket);
+    }
   }
 }
 

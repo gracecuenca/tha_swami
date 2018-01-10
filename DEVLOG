@@ -18,3 +18,6 @@ Updated networking files. To do stuff:
 - for some reason headers.h isn't working correctly and there is a compile error when trying to do make client
 - not sure if the way I did color send/recieve is correct
 
+naotakaK -- 2018-01-10 15:26
+more server work it kind of works but also breaks
+

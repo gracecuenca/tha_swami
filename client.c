@@ -17,13 +17,15 @@ int main(int argc, char **argv) {
     fgets(buffer, sizeof(buffer), stdin);
     *strchr(buffer, '\n') = 0;
     ***/
+    //printf("CLIENT START\n");
+    write(server_socket, buffer, sizeof(buffer));
     read(server_socket, buffer, sizeof(buffer));
     color = change_color(buffer);
     if (color) {
-      write(server_socket, "CHANGED COLOR", sizeof(char *));
+      write(server_socket, "CHANGED COLOR", 256);
     }
     else {
-      write(server_socket, buffer, sizeof(buffer));
+      write(server_socket, "NOT CHANGED COLOR", 256);
     }
     //free(color);
     //printf("received: [%s]\n", buffer);
