@@ -1,13 +1,13 @@
-naotakaK - 2018-01-03 11:41
+naotakaK -- 2018-01-03 11:41
 Started color changing terminal stuff, not working completely
 
-graceC - 2018-01-04 16:29
+graceC -- 2018-01-04 16:29
 Fixed terminal color changing but needs work
 
-graceC - 2018-01-05 20:38
+graceC -- 2018-01-05 20:38
 Terminal color worked fine on home machine but not on school machines so attempted ot fix
 
-naotakaK - 2018-01-06 23:51
+naotakaK -- 2018-01-06 23:51
 Fixed double free error, not 100% sure if printing colors correctly, requires more testing
 
 jackC - 2018-01-09 15:25
@@ -21,3 +21,5 @@ Updated networking files. To do stuff:
 naotakaK -- 2018-01-10 15:26
 more server work it kind of works but also breaks
 
+cuencaG -- 2018-01-10 22:43
+began keypress func for term col
