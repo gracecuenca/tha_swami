@@ -1,10 +1,10 @@
 forking: client fserver
 
 fserver: forking_server.o networking.o headers.h
-	gcc -o server forking_server.o networking.o headers.h
+	gcc -o server forking_server.o networking.o
 
 client: client.o term_col.o networking.o headers.h
-	gcc -o client client.o term_col.o networking.o headers.h
+	gcc -o client client.o term_col.o networking.o
 
 client.o: client.c headers.h
 	gcc -c client.c

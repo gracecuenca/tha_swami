@@ -38,25 +38,3 @@ char * change_color(char * color){
   printf(RESET);
   return screen;
 }
-/***
-int main() {
-  char * color;
-  //print_change(RED);
-  //print_change(RESET);
-  color = change_color(GREY);
-  sleep(1);
-  color = change_color(RED);
-  sleep(1);
-  color = change_color(GREEN);
-  sleep(1);
-  color = change_color(YELLOW);
-  sleep(1);
-  color = change_color(BLUE);
-  sleep(1);
-  color = change_color(CYAN);
-  sleep(1);
-  color = change_color(MAGENTA);
-  free(color);
-  return 0;
-}
-***/
