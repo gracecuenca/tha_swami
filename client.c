@@ -5,6 +5,7 @@ int main(int argc, char **argv) {
   int server_socket;
   char buffer[BUFFER_SIZE];
   char * color;
+  int counter = 0; //temp for now just to keep track
 
   if (argc == 2)
     server_socket = client_setup( argv[1]);
@@ -27,6 +28,12 @@ int main(int argc, char **argv) {
     else {
       write(server_socket, "NOT CHANGED COLOR", 256);
     }
+
+    printf("%d\n", counter);
+    //awaiting user to hit enter, incidicating that it's reached the computer to wack
+    getchar();
+    counter++;
+
     //free(color);
     //printf("received: [%s]\n", buffer);
   }
