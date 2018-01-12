@@ -18,6 +18,9 @@ forking_server.o: forking_server.c headers.h
 networking.o: networking.c headers.h
 	gcc -c networking.c
 
+scroll_text.o: scroll_text.c headers.h
+	gcc -c scroll_text.c
+
 clean:
 	rm *.o
 	rm *~
