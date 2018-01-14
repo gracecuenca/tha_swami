@@ -22,24 +22,59 @@ void clearscreen(){
   printf(CLEAR);
 }
 
+void print_screen(char** screen){
+  int i;
+  for(i = 0; i < rows(); i++){
+    printf("%s\n", screen[i]);
+  }
+}
+
 char** terminal_line(){
   int num_rows = rows();
-  char** lines = calloc(num_rows, 256);
-  int index;
+  int num_cols = cols();
+  char** lines = malloc(num_rows * sizeof(char*));
+  int index = 0;
+  int i = 0;
   //where index 0 is top
   for(index = 0; index < num_rows; index++){
-    lines[index] = "a";//temp, find out how we will get text in first place
+    lines[index] = malloc(num_cols * sizeof(char*));
+    while(i < num_cols - 1){
+      strcat(lines[index], "-");
+      i++;
+    }
+    i=0;
+    strcat(lines[index], "a");
   }
-  index = 0;
-  while(num_rows){
-    printf("%s\n", lines[index]);
-    index++;
-    num_rows--;
-  }
+  print_screen(lines);
+  //add freeing stuff
   return lines;
+}
+
+char** screen_shift(char** init_screen){
+  int row;
+  char * temp;
+  for(int row = 0; row < rows(); row++){
+    init_screen[row]+=1;
+    strcat(init_screen[row], "-");
+  }
+  clearscreen();
+  print_screen(init_screen);
+  //add freeing stuff
+  return init_screen;
+}
+
+char** screen_move(char** screen){
+  int col;
+  char** term = screen;
+  for(col = 0; col < cols(); col++){
+    term = screen_shift(term);
+    sleep(1);
+  }
+  return term;
 }
 
 int main(){
   clearscreen();
-  terminal_line();
+  char** screen = terminal_line();
+  screen_move(screen);
 }

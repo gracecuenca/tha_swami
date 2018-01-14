@@ -23,4 +23,5 @@ scroll_text.o: scroll_text.c headers.h
 
 clean:
 	rm *.o
-	rm *~
+	rm client
+	rm server
