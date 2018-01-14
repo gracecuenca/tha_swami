@@ -53,7 +53,7 @@ char** terminal_line(){
 char** screen_shift(char** init_screen){
   int row;
   char * temp;
-  for(int row = 0; row < rows(); row++){
+  for(row = 0; row < rows(); row++){
     init_screen[row]+=1;
     strcat(init_screen[row], "-");
   }
