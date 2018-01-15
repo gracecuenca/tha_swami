@@ -39,3 +39,7 @@ int cols();
 int term_size();
 char * change_color(char *);
 void clearscreen();
+void print_screen(char** screen);
+char** terminal_line();
+char** screen_shift(char** init_screen);
+char** screen_move(char** screen);

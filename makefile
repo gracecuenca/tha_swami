@@ -1,13 +1,19 @@
-forking: client fserver
+forking: client server
 
-fserver: forking_server.o networking.o headers.h
+server: forking_server.o networking.o headers.h
 	gcc -o server forking_server.o networking.o
 
-client: client.o term_col.o networking.o headers.h
-	gcc -o client client.o term_col.o networking.o
+color_client: color_client.o term_col.o networking.o headers.h
+	gcc -o color_client color_client.o term_col.o networking.o
 
-client.o: client.c headers.h
-	gcc -c client.c
+scroll_client: scroll_client.o scroll_text.o networking.o headers.h
+	gcc -o scroll_client scroll_client.o scroll_text.o networking.o
+
+color_client.o: color_client.c headers.h
+	gcc -c color_client.c
+
+scroll_client.o: scroll_client.c headers.h
+	gcc -c scroll_client.c
 
 term_col.o: term_col.c headers.h
 	gcc -c term_col.c
@@ -23,5 +29,6 @@ scroll_text.o: scroll_text.c headers.h
 
 clean:
 	rm *.o
-	rm client
+	rm color_client
+	rm scroll_client
 	rm server

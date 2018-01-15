@@ -72,9 +72,3 @@ char** screen_move(char** screen){
   }
   return term;
 }
-
-int main(){
-  clearscreen();
-  char** screen = terminal_line();
-  screen_move(screen);
-}
