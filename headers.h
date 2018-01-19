@@ -9,6 +9,10 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
+#include <sys/shm.h>
+#include <sys/ipcs.h>
+
+#define KEY 100
 
 #ifndef NETWORKING_H
 #define NETWORKING_H
@@ -43,3 +47,5 @@ void print_screen(char** screen);
 char** terminal_line();
 char** screen_shift(char** init_screen);
 char** screen_move(char** screen);
+
+
