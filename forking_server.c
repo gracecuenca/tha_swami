@@ -1,5 +1,4 @@
 #include "headers.h"
-#include <time.h>
 
 void process(char *s);
 void subserver(int from_client);
@@ -44,21 +43,21 @@ void subserver(int client_socket) {
   pids[i] = getpid();
   printf("pids[%d]: %d\n", i, getpid());
   i ++;
-  
+
   while (read(client_socket, buffer, sizeof(buffer))) {
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
     //initial setup to turn all clients red
     write(client_socket, RED, sizeof(char *));
 
-    
+
     //game start fxn
     if (!started && getpid() == getRandPID()) {
       write(client_socket, CYAN, sizeof(char *));
       started = 1;
     }
-    
+
     //write(client_socket, CYAN, sizeof(char *));
-    
+
     //if read = blue
     if (!strcmp(CYAN, buffer)) {
       //getrandpid
@@ -69,7 +68,7 @@ void subserver(int client_socket) {
       write(client_socket, CYAN, sizeof(char *));
       can_change = 0;
     }
-    
+
   }//end read loop
   close(client_socket);
   exit(0);

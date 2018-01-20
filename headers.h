@@ -10,7 +10,8 @@
 #include <netdb.h>
 #include <errno.h>
 #include <sys/shm.h>
-#include <sys/ipcs.h>
+#include <sys/ipc.h>
+#include <time.h>
 
 #define KEY 100
 
@@ -47,5 +48,3 @@ void print_screen(char** screen);
 char** terminal_line();
 char** screen_shift(char** init_screen);
 char** screen_move(char** screen);
-
-

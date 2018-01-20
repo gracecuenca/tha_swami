@@ -16,7 +16,7 @@ Fixed the error in which the screen did not print the desired color to the entir
 naotakaK -- 2018-01-09 19:59
 Updated networking files. To do stuff:
 - for some reason headers.h isn't working correctly and there is a compile error when trying to do make client
-- not sure if the way I did color send/recieve is correct
+- not sure if the way I did color send/receive is correct
 
 naotakaK -- 2018-01-10 15:26
 more server work it kind of works but also breaks
@@ -41,4 +41,3 @@ naotakaK -- 2018-01-19 16:44
 started more colors stuff.
 - socket issues
 - weird pid stuff
-

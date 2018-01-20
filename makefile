@@ -1,4 +1,4 @@
-forking: client server
+forking: color_client scroll_client server
 
 server: forking_server.o networking.o headers.h
 	gcc -o server forking_server.o networking.o
