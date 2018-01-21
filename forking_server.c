@@ -7,24 +7,25 @@ void process(char *s);
 //void matrix_subserver(int from_client);
 void subserver(int from_client);
 
-int can_change = 0;
-int started = 0;
-
 int main() {
   int listen_socket;
   int f;
   int a;
 
   //shared memory initizlizations
-  int shmid = shmget(KEY, 5*sizeof(int), IPC_CREAT | 0666);
+  int shmid = shmget(KEY, 7*sizeof(int), IPC_CREAT | 0666);
   if(shmid < 0){
     printf("error in shmget\n");
   }
+  //THIS ARRAY HOLDS ALL THE pids (clients)
+  //pids[0] = pids[0]
+  //pids[1] = pids[1]
+  //the rest are actual pids
   int* pids = shmat(shmid, 0, 0);
   if((int)pids < 0){
     printf("error in shmat\n");
   }
-  for (a = 0; a < 5; a ++) {
+  for (a = 0; a < 7; a ++) {
     pids[a] = 0;
     printf("%d\n", pids[a]);
   }
@@ -46,9 +47,9 @@ int main() {
 
 int getRandPID(int*array) {
   srand(time(NULL));
-  int r = rand() % 5;
-  while(!array[r]){
-    r = rand()%5;
+  int r = rand() % 7;
+  while(!array[r] || r == 0 || r == 1){
+    r = rand()%7;
   }
   //printf("PID: %d\n", pids[r]);
   return array[r];
@@ -75,9 +76,9 @@ void subserver(int client_socket) {
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
 
     //adding pid to pids array
-    if(!already_connected(getpid(),pids,5)){
-      int index=0;
-      while(pids[index] !=0 && index< 5){
+    if(!already_connected(getpid(),pids,7)){
+      int index=2;
+      while(pids[index] !=0 && index< 7){
         index++;
       }
       pids[index] = getpid();
@@ -88,9 +89,9 @@ void subserver(int client_socket) {
     write(client_socket, RED, sizeof(char *));
 
     //game start fxn
-    if (!started && getpid() == getRandPID(pids)) {
+    if (!pids[1] && getpid() == getRandPID(pids)) {
       write(client_socket, CYAN, sizeof(char *));
-      started = 1;
+      pids[1] = 1;
     }
 
     //write(client_socket, CYAN, sizeof(char *));
@@ -98,12 +99,12 @@ void subserver(int client_socket) {
     //if read = blue
     if (!strcmp(CYAN, buffer)) {
       //getrandpid
-      can_change = 1;
+      pids[0] = 1;
     }
-    if (can_change && getpid() == getRandPID(pids)) {
+    if (pids[0] && getpid() == getRandPID(pids)) {
       //if getpid = getrandpid write blue
       write(client_socket, CYAN, sizeof(char *));
-      can_change = 0;
+      pids[0] = 0;
     }
 
   }//end read loop
