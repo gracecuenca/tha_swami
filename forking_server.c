@@ -18,8 +18,8 @@ int main() {
     printf("error in shmget\n");
   }
   //THIS ARRAY HOLDS ALL THE pids (clients)
-  //pids[0] = pids[0]
-  //pids[1] = pids[1]
+  //pids[0] = can_change
+  //pids[1] = started
   //the rest are actual pids
   int* pids = shmat(shmid, 0, 0);
   if((int)pids < 0){
