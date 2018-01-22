@@ -14,13 +14,13 @@
 #include <time.h>
 #include <sys/mman.h>
 
-#define KEY 102
+#define KEY 1
 
 #ifndef NETWORKING_H
 #define NETWORKING_H
 
 #define BUFFER_SIZE 256
-#define PORT "9001"
+#define PORT "9002"
 #define TEST_IP "127.0.0.1"
 
 #define RED     "\x1b[41m"
