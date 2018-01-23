@@ -15,6 +15,8 @@
 #include <sys/mman.h>
 
 #define KEY 1
+#define KEY2 2
+#define KEY3 3
 
 #ifndef NETWORKING_H
 #define NETWORKING_H

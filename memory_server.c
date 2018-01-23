@@ -6,11 +6,11 @@ static char COLORS[10][10] = {
   "GREEN",
   "YELLOW",
   "BLUE",
-  "MAGENTA",
-  "CYAN",
-  "GREY"
+  //"MAGENTA",
+  //"CYAN",
+  //"GREY"
 };
-int subserver_color_num = 0;
+int subserver_color_num = 0; //designates color
 
 int main() {
   srand(time(NULL));
@@ -20,18 +20,37 @@ int main() {
 
   //even indices are pids
   //odd indices are the index of colors that are assigned to the pid right before it
-  int shmid = shmget(KEY, 10*sizeof(int), IPC_CREAT | 0666);
-  if(shmid < 0){
-    printf("error in shmget\n");
+  int pid_list_shmid = shmget(KEY, 10*sizeof(int), IPC_CREAT | 0666);
+  if(pid_list_shmid < 0){
+    printf("error in shmget 1\n");
   }
-  int* pids = shmat(shmid, 0, 0);
-  if((int)pids < 0){
-    printf("error in shmat\n");
+  int* pids_list = shmat(pid_list_shmid, 0, 0);
+  if((int)pids_list < 0){
+    printf("error in shmat 1\n");
   }
+  
+ int mem_matrix_shmid = shmget(KEY2, 10*sizeof(int), IPC_CREAT | 0666);
+  if(pid_list_shmid < 0){
+    printf("error in shmget 2\n");
+  }
+  int* mem_matrix = shmat(mem_matrix_shmid, 0, 0);
+  if((int)pids_list < 0){
+    printf("error in shmat 2\n");
+  }
+  
+ int player_choice_shmid = shmget(KEY3, 10*sizeof(int), IPC_CREAT | 0666);
+  if(pid_list_shmid < 0){
+    printf("error in shmget 2\n");
+  }
+  int* player_choice = shmat(player_choice_shmid, 0, 0);
+  if((int)pids_list < 0){
+    printf("error in shmat 2\n");
+  }
+  
 
   listen_socket = server_setup();
 
-  while (1) {
+  while (subserver_color_num < 4) {
     int client_socket = server_connect(listen_socket);
     f = fork();
     if (f == 0) {
@@ -40,8 +59,30 @@ int main() {
     else {
       close(client_socket);
     }
-    subserver_color_num = (subserver_color_num + 1) % 7;
+    subserver_color_num += 1;
   }
+
+  sleep(1);
+
+  
+  for (int i = 0; i < 4; i++) {
+    printf("pids_list[%d]: %d\n", i, pids_list[i]);
+  }
+ 
+  
+  for (int i = 0; i < 10; i++) {
+    mem_matrix[i] = pids_list[rand()%4];
+  }
+
+  
+  int i = 10;
+  while (i < 20) {
+    printf("position %d: pid %d\n", i % 10, mem_matrix[i % 10]);
+    i++;
+  }
+  
+  
+  
 }
 
 //random index to choose form static COLORS array
@@ -64,22 +105,32 @@ int already_connected(int client_pid, int*array, int max){
 
 void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
-  int shmid = shmget(KEY, 10*sizeof(int), 0666);
-  int * pids = shmat(shmid, 0, 0);
+  int pid_list_shmid = shmget(KEY, 10*sizeof(int), 0666);
+  int * pids_list = shmat(pid_list_shmid, 0, 0);
+  
+  int mem_matrix_shmid = shmget(KEY2, 10*sizeof(int), 0666);
+  int * mem_matrix = shmat(mem_matrix_shmid, 0, 0);
+
+  int player_choice_shmid = shmget(KEY3, 10*sizeof(int), 0666);
+  int * player_choice = shmat(player_choice_shmid, 0, 0);
+  
   char * randd;
 
+  pids_list[subserver_color_num] = getpid();
+  printf("pids_list[%d]: %d is the color %s\n", subserver_color_num, pids_list[subserver_color_num], COLORS[subserver_color_num]);
+  
   while (read(client_socket, buffer, sizeof(buffer))) {
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
 
     //adding pid to pids array
-    if(!already_connected(getpid(),pids,14)){
+    /*
+    if(!already_connected(getpid(),pids_list,10)){
       int index=0;
-      while(pids[index] !=0 && index < 14){
+      while(pids_list[index] !=0 && index < 10){
         index++;
       }
-      pids[index] = getpid();
-      printf("pids[%d]: %d is the color %s\n", index, pids[index], COLORS[subserver_color_num]);
-    }
+    */
+    //}
 
     //initial setup to turn all clients clear
     write(client_socket, randd, sizeof(char *));
