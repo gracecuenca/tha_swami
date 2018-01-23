@@ -40,7 +40,7 @@ int main() {
 
     //if listen_socket triggered select
       client_socket = server_connect(listen_socket);
-      
+
       f = fork();
       if (f == 0)
 	subserver(client_socket);
@@ -57,7 +57,6 @@ int main() {
     }
     pid_pos++;
   }
-}
 
 int getRandPID(int*array) {
   srand(time(NULL));
@@ -91,7 +90,7 @@ void subserver(int client_socket) {
     printf("[subserver %d] received: [%s]", getpid(), buffer);
     printf(RESET);
     printf("\n");
-    
+
     if (!pids[1]) {
       write(client_socket, RED, BUFFER_SIZE);
       //pids[1] = 0;
@@ -105,7 +104,7 @@ void subserver(int client_socket) {
     select(client_socket + 1, &read_fds, NULL, NULL, NULL);
 
     printf("3333 \%s \n", buffer);
-    
+
     if (FD_ISSET(client_socket, &read_fds)) {
     }
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
@@ -135,7 +134,7 @@ void subserver(int client_socket) {
       write(client_socket, RED, sizeof(char *));
     }
     printf("2222 \%s \n", buffer);
-    
+
     if (pids[1] && getpid() == getRandPID(pids)) {
       //write(client_socket, "", BUFFER_SIZE);
       if (write(client_socket, CYAN, BUFFER_SIZE) == -1) {
@@ -152,7 +151,7 @@ void subserver(int client_socket) {
       pids[0] = 0;
     }
     ***/
-  
+
   }//end read loop
   close(client_socket);
   exit(0);
