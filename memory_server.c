@@ -10,6 +10,7 @@ static char COLORS[10][10] = {
   "CYAN",
   "GREY"
 };
+int subserver_color_num = 0;
 
 int main() {
   srand(time(NULL));
@@ -19,7 +20,7 @@ int main() {
 
   //even indices are pids
   //odd indices are the index of colors that are assigned to the pid right before it
-  int shmid = shmget(KEY, 14*sizeof(int), IPC_CREAT | 0666);
+  int shmid = shmget(KEY, 10*sizeof(int), IPC_CREAT | 0666);
   if(shmid < 0){
     printf("error in shmget\n");
   }
@@ -39,6 +40,7 @@ int main() {
     else {
       close(client_socket);
     }
+    subserver_color_num = (subserver_color_num + 1) % 7;
   }
 }
 
@@ -62,7 +64,7 @@ int already_connected(int client_pid, int*array, int max){
 
 void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
-  int shmid = shmget(KEY, 14*sizeof(int), IPC_CREAT | 0666);
+  int shmid = shmget(KEY, 10*sizeof(int), 0666);
   int * pids = shmat(shmid, 0, 0);
   char * randd;
 
@@ -72,13 +74,11 @@ void subserver(int client_socket) {
     //adding pid to pids array
     if(!already_connected(getpid(),pids,14)){
       int index=0;
-      while(pids[index] !=0 && index< 14){
+      while(pids[index] !=0 && index < 14){
         index++;
       }
       pids[index] = getpid();
-      pids[index+1] = rand_index();
-      printf("pids[%d]: %d is the color %s\n", index, pids[index], COLORS[pids[index+1]]);
-      randd= COLORS[pids[index+1]];
+      printf("pids[%d]: %d is the color %s\n", index, pids[index], COLORS[subserver_color_num]);
     }
 
     //initial setup to turn all clients clear
