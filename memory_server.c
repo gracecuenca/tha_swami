@@ -105,6 +105,7 @@ int already_connected(int client_pid, int*array, int max){
 
 void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
+  
   int pid_list_shmid = shmget(KEY, 10*sizeof(int), 0666);
   int * pids_list = shmat(pid_list_shmid, 0, 0);
   
