@@ -71,3 +71,6 @@ TODO:
  - clean up makefile
  - clean up output for main server to create game experience
  - update README - are we doing one server file only?
+naotakaK -- 2018-01-25 11:34
+Blocking issues, tried to fix w/ self pipe but issue is somewhere else
+
