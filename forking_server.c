@@ -30,7 +30,7 @@ int main() {
     pids[a] = 0;
     //printf("pids[%d] : %d\n", a, pids[a]);
   }
-
+  printf("=======WHACK-A-MOLE: Connect clients to begin\n=======");
   listen_socket = server_setup();
 
   while (1) {
@@ -77,7 +77,7 @@ void subserver(int client_socket) {
   while (read(client_socket, buffer, sizeof(buffer))) {
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
 
-    printf("0000 \%s \n", buffer);
+    //printf("0000 \%s \n", buffer);
 
     if(!already_connected(getpid(), pids, 7)){
       int index = 2;
@@ -88,40 +88,47 @@ void subserver(int client_socket) {
       printf("pids[%d]: %d\n", index, pids[index]);
     }
 
-    printf("4444 \%s \n", buffer);
+    //printf("4444 \%s \n", buffer);
 
     //select initializations
     fflush(stdout);
     FD_ZERO(&read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
     FD_SET(client_socket, & read_fds);
-    //uncommented this to stop blocking but might result in bad stuff later on
+    //commented this to stop blocking but might result in bad stuff later on
     //select(client_socket + 1, &read_fds, NULL, NULL, NULL);
 
-    printf("3333 \%s \n", buffer);
+    //printf("3333 \%s \n", buffer);
 
     //if reading from stdin on server side
     if(!pids[1]){
+      //printf("=======WHACK-A-MOLE: Press ENTER to begin=======\n");
       if (FD_ISSET(STDIN_FILENO, &read_fds)) {
         fgets(buffer, sizeof(buffer), stdin);
         if (!strcmp(buffer, "\n") && !pids[1]) {
           write(client_socket, RED, BUFFER_SIZE);
-          printf("DEFAULT RED SENT\n");
+	  if (getpid() == pids[3]) {
+	    write(client_socket, RED, BUFFER_SIZE);
+	    printf("HELLLLLLLOOOOO %d\n", getpid());
+	  }
+	  printf("writing red %d\n", getpid());
+          printf("\nGAME STARTED\n");
           sleep(1);
           //change game started status to started
           pids[1] = 1;
           //clients are now red, so they are prone to being changed
-          pids[0] =1;
+          pids[0] = 1;
         }
       }
     }
 
-    printf("1111 \%s \n", buffer);
+    //printf("1111 \%s \n", buffer);
     //if game started
     if (pids[1]){ //&& getpid() == getRandPID(pids)) {
       //if need to send CYAN to a client
       if(pids[0]){
         write(client_socket, CYAN, BUFFER_SIZE);
+	printf("writing cyan %d\n", getpid());
         //cyan set
         pids[0] = 0;
         printf("WRITE CYAN\n");
@@ -131,16 +138,17 @@ void subserver(int client_socket) {
         printf("GOT CYAN\n");
         //turn it back to red upon receiving the CYAN
         write(client_socket, RED, sizeof(char *));
+	printf("writing red2 %d\n", getpid());
         printf("WROTE RED BACK\n");
         //sleep(1);
         pids[0] =1;
       }
     }
 
-    printf("2222 \%s \n", buffer);
+    //printf("2222 \%s \n", buffer);
 
-    printf("pids[0]: %d\n",pids[0]);
-    printf("pids[1]: %d\n",pids[1]);
+    //printf("pids[0]: %d\n",pids[0]);
+    //printf("pids[1]: %d\n",pids[1]);
 
     printf("=======================================\n\n");
 

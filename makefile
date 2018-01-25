@@ -3,6 +3,12 @@ forking: color_client scroll_client matrix_client mem_server server
 server: forking_server.o networking.o headers.h
 	gcc -o server forking_server.o networking.o
 
+server_test: server_test.o networking.o headers.h
+	gcc -o server_test server_test.o networking.o
+
+server_test.o: server_test.c headers.h
+	gcc -c server_test.c
+
 mem_server: memory_server.o networking.o headers.h
 	gcc -o mem_server memory_server.o networking.o
 

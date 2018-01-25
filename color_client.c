@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
       }
       color = change_color(buffer);
       sleep(1);
-      write(server_socket, "\n", sizeof("\n"));
+      write(server_socket, "", sizeof(""));
       if (fflush(stdout) != 0) {
         printf("%s\n", strerror(errno));
         exit(0);

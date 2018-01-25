@@ -50,3 +50,24 @@ Readme!
 
 graceC -- 2018-01-24 21:30
 Colors for one client :0
+
+naotakaK -- 2018-01-25 00:52
+Completely rewrote forking_server.c, working version is at server_test.c.
+ - the new version now uses pipes to communicate from the main server to the subservers per DW's suggestions
+ - no longer requires any shared memory
+ - this works with multiple clients
+ - changing colors is done by sending data through pipes from main server to all or select subservers
+ - game initialization works (all clients turn red, then one client turns blue)
+ - the problem is that the main server isn't reading from the pipes (I think)
+ - after initialization, the main server doesn't do anything and pressing enter on clients does nothing
+ - added comments for everything
+ - problem areas are commented with /*** ***/
+ - minor edit to color_client.c to make it write "" instead of "\n" if nothing is reading from STDIN
+TODO:
+ - obviously fix server_test.c
+ - make it work with actual IPs (should be fine)
+ - memory matrix?? scrolling text??
+ - clean up headers.h
+ - clean up makefile
+ - clean up output for main server to create game experience
+ - update README - are we doing one server file only?
