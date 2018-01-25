@@ -1,13 +1,13 @@
-forking: color_client scroll_client matrix_client mem_server server
+forking: color_client scroll_client matrix_client mem_server color_server
 
 server: forking_server.o networking.o headers.h
 	gcc -o server forking_server.o networking.o
 
-server_test: server_test.o networking.o headers.h
-	gcc -o server_test server_test.o networking.o
+color_server: color_server.o networking.o headers.h
+	gcc -o color_server color_server.o networking.o
 
-server_test.o: server_test.c headers.h
-	gcc -c server_test.c
+color_server.o: color_server.c headers.h
+	gcc -c color_server.c
 
 mem_server: memory_server.o networking.o headers.h
 	gcc -o mem_server memory_server.o networking.o
@@ -36,9 +36,6 @@ matrix_client.o: matrix_client.c headers.h
 term_col.o: term_col.c headers.h
 	gcc -c term_col.c
 
-forking_server.o: forking_server.c headers.h
-	gcc -c forking_server.c
-
 networking.o: networking.c headers.h
 	gcc -c networking.c
 
@@ -50,5 +47,5 @@ clean:
 	rm color_client
 	rm scroll_client
 	rm matrix_client
-	rm server
+	rm color_server
 	rm mem_server
