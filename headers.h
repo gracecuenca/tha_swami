@@ -34,6 +34,8 @@
 #define GREY    "\x1b[47m"
 #define RESET   "\x1b[0m"
 #define CLEAR   "\x1b[2J"
+#define WHITE   "\x1b[37m"
+
 
 void error_check(int i, char *s);
 int server_setup();

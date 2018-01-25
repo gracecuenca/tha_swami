@@ -110,14 +110,36 @@ void subserver(int client_socket) {
   pids_list[subserver_color_num] = getpid();
   printf("pids_list[%d]: %d is the color %s\n", subserver_color_num, pids_list[subserver_color_num], COLORS[subserver_color_num]);
 
+  read(client_socket, buffer, sizeof(buffer));
+  printf("[subserver %d] received: [%s]\n", getpid(), buffer);
+  write(client_socket, color, sizeof(char *));
+
+  printf("made it here\n");
+
+
+  printf("made it here\n");
+
   while (read(client_socket, buffer, sizeof(buffer))) {
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
 
 
-    //initial setup to turn all clients clear
+    //initial setup to turn all clients to their color
     write(client_socket, color, sizeof(char *));
 
   }//end read loop
   close(client_socket);
   exit(0);
 }
+
+/*
+  for (int index_of_pattern = 0; index_of_pattern < 10; index_of_pattern++) {
+    if (mem_matrix[index_of_pattern] == getpid()) {
+      write(client_socket, WHITE, sizeof(char *));
+    }
+    sleep(1);
+    if (mem_matrix[index_of_pattern] == getpid()) {
+      write(client_socket, color, sizeof(char *));
+    }
+    sleep(1);
+  }
+*/
