@@ -28,7 +28,7 @@ int main() {
   //the rest are actual pids
   for (a = 0; a < 7; a ++) {
     pids[a] = 0;
-    printf("pids[%d] : %d\n", a, pids[a]);
+    //printf("pids[%d] : %d\n", a, pids[a]);
   }
 
   listen_socket = server_setup();
@@ -95,33 +95,28 @@ void subserver(int client_socket) {
     FD_ZERO(&read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
     FD_SET(client_socket, & read_fds);
-    select(client_socket + 1, &read_fds, NULL, NULL, NULL);
+    //uncommented this to stop blocking but might result in bad stuff later on
+    //select(client_socket + 1, &read_fds, NULL, NULL, NULL);
 
     printf("3333 \%s \n", buffer);
 
-    //if reading from client socket on server side
-    if (FD_ISSET(client_socket, &read_fds)) {
-    }
-
     //if reading from stdin on server side
-    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-      fgets(buffer, sizeof(buffer), stdin);
-      //game start function
-      //sends red to all the client
-      //WORKS
-      if (!strcmp(buffer, "\n") && !pids[1]) {
-        write(client_socket, RED, BUFFER_SIZE);
-        printf("DEFAULT RED SENT\n");
-        sleep(1);
-        //change game started status to started
-        pids[1] = 1;
-        //clients are now red, so they are prone to being changed
-        pids[0] =1;
+    if(!pids[1]){
+      if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+        fgets(buffer, sizeof(buffer), stdin);
+        if (!strcmp(buffer, "\n") && !pids[1]) {
+          write(client_socket, RED, BUFFER_SIZE);
+          printf("DEFAULT RED SENT\n");
+          sleep(1);
+          //change game started status to started
+          pids[1] = 1;
+          //clients are now red, so they are prone to being changed
+          pids[0] =1;
+        }
       }
     }
 
     printf("1111 \%s \n", buffer);
-
     //if game started
     if (pids[1]){ //&& getpid() == getRandPID(pids)) {
       //if need to send CYAN to a client
@@ -132,11 +127,12 @@ void subserver(int client_socket) {
         printf("WRITE CYAN\n");
       }
       //if the server receives CYAN color code and the game has started already
-      if (!strcmp(CYAN, buffer)) {
+      if (!strcmp(CYAN, buffer) && !pids[0]) {
         printf("GOT CYAN\n");
         //turn it back to red upon receiving the CYAN
         write(client_socket, RED, sizeof(char *));
-        sleep(1);
+        printf("WROTE RED BACK\n");
+        //sleep(1);
         pids[0] =1;
       }
     }
