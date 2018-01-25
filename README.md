@@ -35,6 +35,8 @@ $ make
 
 Since the server for each game was created separately, you must run specific servers for specific games.
 
+#### Important: If running the client and server files on localhost (127.0.0.1), there is no need to specify an IP. Otherwise, be sure to include the IP that the server file is running on.
+
 To run wack-a-mole
 
 Server:
@@ -46,7 +48,7 @@ $ ./color_server
 Client(s):
 
 ```
-$ ./color_client
+$ ./color_client [ip]
 ```
 
 To run scrolling text
@@ -60,7 +62,7 @@ $ ./scroll_server
 Client(s):
 
 ```
-$ ./scroll_client
+$ ./scroll_client [ip]
 ```
 
 To run memory matrix (FILL IN)
