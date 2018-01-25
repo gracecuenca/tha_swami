@@ -5,7 +5,6 @@ int main(int argc, char **argv) {
   int server_socket;
   char buffer[BUFFER_SIZE] = "buffer"; //color read from server
   char std_in[BUFFER_SIZE]; //stdin
-  char buffer2[BUFFER_SIZE] = "buffer2"; //old color
   char * color;
   fd_set read_fds;
 
@@ -26,26 +25,22 @@ int main(int argc, char **argv) {
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(std_in, sizeof(std_in), stdin);
+      
+      //if enter is pressed write current color
       if (!strcmp(std_in, "\n")) {
-	printf("Client read from stdin\n");
-	printf("buffer: %s ", buffer);
-	printf(RESET);
-	printf("\n");
         write(server_socket, buffer, sizeof(buffer));
-        //color = change_color(buffer);
       }
     }
 
     if (FD_ISSET(server_socket, &read_fds)) {
-      strncpy(buffer2, buffer, sizeof(buffer2));
       if (read(server_socket, buffer, sizeof(buffer)) == -1) {
         printf("%s\n", strerror(errno));
         exit(0);
       }
-      
+
+      //change color
       color = change_color(buffer);
-      sleep(1);
-      //write(server_socket, buffer2, sizeof(buffer2));
+      write(server_socket, "", sizeof(""));
       if (fflush(stdout) != 0) {
 	printf("%s\n", strerror(errno));
 	exit(0);
