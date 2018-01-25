@@ -20,7 +20,7 @@ int main() {
   char buffer[BUFFER_SIZE];
 
   int self_pipe[2];
-  
+
   pipe(self_pipe);
 
   //initalize pipes
@@ -36,49 +36,47 @@ int main() {
 
     /***
 	If started, display score if it changed. Loop through pipes and
-	see if CYAN was sent. If it was, send new colors. If not, keep 
+	see if CYAN was sent. If it was, send new colors. If not, keep
 	same state.
      ***/
     if (started) {
-
       //score keeping
       if (old_score != score) {
-	printf("=====SCORE: %d=====\n", score);
-	old_score = score;
+        printf("=====SCORE: %d=====\n", score);
+        old_score = score;
       }
 
       //loop through pipes and look for cyan
       for (pipes = 0; pipes < subserver_count; pipes ++) {
-	
-	close(ss_to_server[2 * pipes + WRITE]);
-	read(ss_to_server[2 * pipes + READ], &buffer, sizeof(buffer));
+        close(ss_to_server[2 * pipes + WRITE]);
+        read(ss_to_server[2 * pipes + READ], &buffer, sizeof(buffer));
 
-	//if cyan, increment score, allow colors to be changed, exit loop
-	if (!strcmp(CYAN, buffer) && !can_change && pipes == cyan) { 
-	  can_change = 1;
-	  score ++;
-	  break;
-	}
+        //if cyan, increment score, allow colors to be changed, exit loop
+        if (!strcmp(CYAN, buffer) && !can_change && pipes == cyan) {
+          can_change = 1;
+          score ++;
+          break;
+        }
       }
 
       //assign new color values, stop colors from changing
-      if (can_change) { 
-	cyan = send_colors(subserver_count, RED, CYAN);
-	can_change = 0;
+      if (can_change) {
+        cyan = send_colors(subserver_count, RED, CYAN);
+        can_change = 0;
       }
 
       //keep same color state
       else {
-	for (pipes = 0; pipes < subserver_count; pipes ++) {
-	  if (pipes == cyan) {
-	    close(server_to_ss[2 * cyan + READ]);
-	    write(server_to_ss[2 * cyan + WRITE], CYAN, sizeof(char *));
-	  }
-	  else {
-	    close(server_to_ss[2 * pipes + READ]);
-	    write(server_to_ss[2 * pipes + WRITE], RED, sizeof(char *));
-	  }
-	}
+        for (pipes = 0; pipes < subserver_count; pipes ++) {
+          if (pipes == cyan) {
+            close(server_to_ss[2 * cyan + READ]);
+            write(server_to_ss[2 * cyan + WRITE], CYAN, sizeof(char *));
+          }
+          else {
+            close(server_to_ss[2 * pipes + READ]);
+            write(server_to_ss[2 * pipes + WRITE], RED, sizeof(char *));
+          }
+        }
       }
     }
 
@@ -88,65 +86,65 @@ int main() {
     FD_SET(STDIN_FILENO, &read_fds); //add stdin to fd set
     FD_SET(listen_socket, &read_fds); //add socket to fd set
     FD_SET(self_pipe[READ], &read_fds); //add self pipe to stop blocking
-  
+
     //select will block until either fd is ready
     //if started, run self pipe to stop blocking on select()
     if (started) {
       write(self_pipe[WRITE], "", sizeof(""));
-      select(self_pipe[READ] + 1, &read_fds, NULL, NULL, NULL); 
+      select(self_pipe[READ] + 1, &read_fds, NULL, NULL, NULL);
     }
     else {
       select(listen_socket + 1, &read_fds, NULL, NULL, NULL);
     }
-    
+
     //if listen_socket triggered select
     if (FD_ISSET(listen_socket, &read_fds)) {
       client_socket = server_connect(listen_socket);
-      
+
       f = fork();
       if (f == 0) {
-	printf("Client %d connected\n", subserver_count);
-	subserver(client_socket, subserver_count);
+        printf("Client %d connected\n", subserver_count);
+        subserver(client_socket, subserver_count);
       }
       else {
-	subserver_count++;
-	close(client_socket);
+        subserver_count++;
+        close(client_socket);
       }
     }
-    
+
     //if stdin triggered select
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(buffer, sizeof(buffer), stdin);
 
       //start game
       if (!strcmp(buffer, "\n") && !started) {
-	printf("Game started: Press ENTER on blue clients\n");
-	sleep(1);
-	cyan = send_colors(subserver_count, RED, CYAN);
-	started = 1;
+        printf("Game started: Press ENTER on blue clients\n");
+        sleep(1);
+        cyan = send_colors(subserver_count, RED, CYAN);
+        started = 1;
       }
 
       /***
       //end game
       if (!strcmp(buffer, "\n") && started) {
-	send_colors(subserver_count, RED, RED);
-	sleep(1);
-	send_colors(subserver_count, CYAN, CYAN);
-	sleep(1);
-	send_colors(subserver_count, RED, RED);
-	sleep(1);
-	send_colors(subserver_count, CYAN, CYAN);
-	sleep(1);
-	send_colors(subserver_count, RESET, RESET);
-	printf("=====Thanks for playing!=====\n\n");
-	printf("=====  Final score: %d  =====\n\n", score);
-	printf("==Press ENTER to play again==\n\n");
-	score = 0;
-	started = 0;
-      }
+      send_colors(subserver_count, RED, RED);
+      sleep(1);
+      send_colors(subserver_count, CYAN, CYAN);
+      sleep(1);
+      send_colors(subserver_count, RED, RED);
+      sleep(1);
+      send_colors(subserver_count, CYAN, CYAN);
+      sleep(1);
+      send_colors(subserver_count, RESET, RESET);
+      printf("=====Thanks for playing!=====\n\n");
+      printf("=====  Final score: %d  =====\n\n", score);
+      printf("==Press ENTER to play again==\n\n");
+      score = 0;
+      started = 0;
+    }
       ***/
     }
-    
+
   }
 }
 
@@ -190,7 +188,7 @@ void subserver(int client_socket, int subserver_num) {
     //read response from main server
     close(server_to_ss[2 * subserver_num + WRITE]);
     read(server_to_ss[2 * subserver_num + READ], &from_server, sizeof(from_server));
-    
+
     //send response from server to client
     write(client_socket, from_server, sizeof(from_server));
 

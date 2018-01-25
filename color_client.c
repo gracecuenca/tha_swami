@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       fgets(std_in, sizeof(std_in), stdin);
-      
+
       //if enter is pressed write current color
       if (!strcmp(std_in, "\n")) {
         write(server_socket, buffer, sizeof(buffer));
@@ -42,8 +42,8 @@ int main(int argc, char **argv) {
       color = change_color(buffer);
       write(server_socket, "", sizeof(""));
       if (fflush(stdout) != 0) {
-	printf("%s\n", strerror(errno));
-	exit(0);
+        printf("%s\n", strerror(errno));
+        exit(0);
       }
     }
   }
