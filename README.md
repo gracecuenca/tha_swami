@@ -23,26 +23,56 @@ In our implementation of memory matrix, all clients connected to the server will
 ### Running the Arcade
 First, clone the repo
 
-`$ git clone https://github.com/gracecuenca/tha_swami.git`
+```
+$ git clone https://github.com/gracecuenca/tha_swami.git
+```
 
 To compile all the files needed to run every game, first run
 
-`$ make`
+```
+$ make
+```
 
-To start up the server
+Since the server for each game was created separately, you must run specific servers for specific games.
 
-`$ ./server`
-
-Now that the server is setup, you can choose which game you'd like to play by setting up the respective clients.
 To run wack-a-mole
 
-`$ ./color_client`
+Server:
+
+```
+$ ./color_server
+```
+
+Client(s):
+
+```
+$ ./color_client
+```
 
 To run scrolling text
 
-`$ ./scroll_client`
+Server:
 
-To run memory matrix
+```
+$ ./scroll_server
+```
 
-//tbd
+Client(s):
 
+```
+$ ./scroll_client
+```
+
+To run memory matrix (FILL IN)
+
+Server:
+
+```
+$ ./
+```
+
+Client(s):
+
+```
+$ ./
+```
