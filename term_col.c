@@ -23,7 +23,7 @@ void clearscreen(){
 }
 
 char * change_color(char * color){
-  clearscreen();
+  //clearscreen();
   int i;
   int size = term_size();
   char * screen;
