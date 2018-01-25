@@ -2,13 +2,13 @@
 void subserver(int from_client);
 
 static char COLORS[10][10] = {
-  "RED",
-  "GREEN",
-  "YELLOW",
-  "BLUE",
-  //"MAGENTA",
-  //"CYAN",
-  //"GREY"
+  RED,
+  GREEN,
+  YELLOW,
+  BLUE,
+  //MAGENTA,
+  //CYAN,
+  //GREY
 };
 int subserver_color_num = 0; //designates color
 
@@ -63,25 +63,15 @@ int main() {
   }
 
   sleep(1);
-
-  
+ 
   for (int i = 0; i < 4; i++) {
     printf("pids_list[%d]: %d\n", i, pids_list[i]);
   }
- 
   
   for (int i = 0; i < 10; i++) {
     mem_matrix[i] = pids_list[rand()%4];
+    printf("position %d: pid %d\n", i, mem_matrix[i]);
   }
-
-  
-  int i = 10;
-  while (i < 20) {
-    printf("position %d: pid %d\n", i % 10, mem_matrix[i % 10]);
-    i++;
-  }
-  
-  
   
 }
 
@@ -105,7 +95,7 @@ int already_connected(int client_pid, int*array, int max){
 
 void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
-  
+
   int pid_list_shmid = shmget(KEY, 10*sizeof(int), 0666);
   int * pids_list = shmat(pid_list_shmid, 0, 0);
   
@@ -115,26 +105,17 @@ void subserver(int client_socket) {
   int player_choice_shmid = shmget(KEY3, 10*sizeof(int), 0666);
   int * player_choice = shmat(player_choice_shmid, 0, 0);
   
-  char * randd;
-
+  char * color = COLORS[subserver_color_num];
+  
   pids_list[subserver_color_num] = getpid();
   printf("pids_list[%d]: %d is the color %s\n", subserver_color_num, pids_list[subserver_color_num], COLORS[subserver_color_num]);
-  
+
   while (read(client_socket, buffer, sizeof(buffer))) {
     printf("[subserver %d] received: [%s]\n", getpid(), buffer);
 
-    //adding pid to pids array
-    /*
-    if(!already_connected(getpid(),pids_list,10)){
-      int index=0;
-      while(pids_list[index] !=0 && index < 10){
-        index++;
-      }
-    */
-    //}
 
     //initial setup to turn all clients clear
-    write(client_socket, randd, sizeof(char *));
+    write(client_socket, color, sizeof(char *));
 
   }//end read loop
   close(client_socket);
