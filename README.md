@@ -15,7 +15,7 @@ Each client should have one terminal screen open. The terminal's background colo
 When the user hits the enter key on a client that has a mole, the mole will move to another client.
 
 #### 2. Scrolling Text
-In our implementation of scrolling text, all clients connected to a server will receive a message that scrolls from one client to the other, in the other that they connected to the server. The message can be anything from a 'hi' to a more complex image created by characters.
+In our implementation of scrolling text, all clients connected to a server will receive a message that scrolls from one client to the other, in the order that they connected to the server. The message can be anything from a 'hi' to a more complex image created by characters.
 
 #### 3. Memory Matrix
 In our implementation of memory matrix, all clients connected to the server will have a designated color that the terminal will change to. Upon beginning the game, the server will randomly select a client to 'flash', indicating that it has to be hit. The game progressively gets harder as more and more clients are randomly selected, as the user has to hit enter on the clients in the order that they were flashed.
@@ -35,7 +35,7 @@ $ make
 
 Since the server for each game was created separately, you must run specific servers for specific games.
 
-#### Important: If running the client and server files on localhost (127.0.0.1), there is no need to specify an IP. Otherwise, be sure to include the IP that the server file is running on.
+#### Important: If running the client and server files on localhost (127.0.0.1), there is no need to specify an IP. Otherwise, be sure to include the IP that the server file is running on when running the client file.
 
 To run wack-a-mole
 
@@ -45,7 +45,7 @@ Server:
 $ ./color_server
 ```
 
-Client(s):
+Client(s): Max number of clients: 5
 
 ```
 $ ./color_client [ip]
@@ -59,7 +59,7 @@ Server:
 $ ./scroll_server
 ```
 
-Client(s):
+Client(s): Max number of clients: 2
 
 ```
 $ ./scroll_client [ip]
