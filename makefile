@@ -1,4 +1,4 @@
-forking: color_client color_server scroll_client scroll_server matrix_client memory_server
+forking: color_client color_server scroll_client scroll_server memory_client memory_server
 
 color_server.o: color_server.c headers.h
 	gcc -c color_server.c
@@ -30,11 +30,11 @@ memory_server.o: memory_server.c headers.h
 memory_server: memory_server.o networking.o headers.h
 	gcc -o memory_server memory_server.o networking.o
 
-matrix_client.o: matrix_client.c headers.h
-	gcc -c matrix_client.c
+memory_client.o: memory_client.c headers.h
+	gcc -c memory_client.c
 
-matrix_client: matrix_client.o color_func.o networking.o headers.h
-	gcc -o matrix_client matrix_client.o color_func.o networking.o
+memory_client: memory_client.o color_func.o networking.o headers.h
+	gcc -o memory_client memory_client.o color_func.o networking.o
 
 color_func.o: color_func.c headers.h
 	gcc -c color_func.c
@@ -51,5 +51,5 @@ clean:
 	rm color_server
 	rm scroll_client
 	rm scroll_server
-	rm matrix_client
+	rm memory_client
 	rm memory_server
