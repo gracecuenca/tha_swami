@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   char** screen = terminal_line(msg);
 
   while (1) {
-
+    //scroll(screen,msg);
     if(screen_move(screen)){
       write(server_socket, "done", sizeof("done"));
       clearscreen();

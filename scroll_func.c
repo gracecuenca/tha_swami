@@ -41,9 +41,12 @@ char** terminal_line(char * msg){
     while(i < num_cols - 1){
       strcat(lines[index], " ");
       i++;
+      if(num_cols-i == strlen(msg)){
+        strcat(lines[index], &msg[0]);
+        break;
+      }
     }
     i=0;
-    strcat(lines[index], &msg[0]);
   }
   //print_screen(lines);
   //add freeing stuff
@@ -71,7 +74,7 @@ int screen_move(char** screen){
   }
   return 1;
 }
-
+/*
 char** scroll(char**init_screen, char*msg){
   int row;
   int col = 0;
@@ -79,7 +82,7 @@ char** scroll(char**init_screen, char*msg){
   while(col < cols()){
     for(row = 0; row < rows(); row++){
       if(i < strlen(msg)){
-        strcat(init_screen[row], &msg[0]);
+        strncpy(init_screen[row], &msg[0], 1);
       }
       else{
         strcat(init_screen[row], " ");
@@ -88,10 +91,11 @@ char** scroll(char**init_screen, char*msg){
     i++;
     msg++;
     col++;
-    clearscreen();
     print_screen(init_screen);
-    //sleep(1);
-    usleep(50000);
+    clearscreen();
+    sleep(1);
+    //usleep(50000);
   }
   return init_screen;
 }
+*/

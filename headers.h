@@ -23,7 +23,7 @@
 #define NETWORKING_H
 
 #define BUFFER_SIZE 256
-#define PORT "9002"
+#define PORT "9005"
 #define TEST_IP "127.0.0.1"
 
 #define RED     "\x1b[41m"
@@ -56,3 +56,4 @@ void print_screen(char** screen);
 char** terminal_line();
 char** screen_shift(char** init_screen);
 int screen_move(char** screen);
+char** scroll(char**init_screen, char*msg);
