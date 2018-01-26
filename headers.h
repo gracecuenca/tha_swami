@@ -19,13 +19,7 @@
 #define KEY2 2
 #define KEY3 3
 
-#ifndef NETWORKING_H
-#define NETWORKING_H
-
-#define BUFFER_SIZE 256
-#define PORT "9005"
-#define TEST_IP "127.0.0.1"
-
+//colors for matrix and wack a mole
 #define RED     "\x1b[41m"
 #define GREEN   "\x1b[42m"
 #define YELLOW  "\x1b[43m"
@@ -37,8 +31,17 @@
 #define CLEAR   "\x1b[2J"
 #define WHITE   "\x1b[37m"
 
+//pipes
 #define READ 0
 #define WRITE 1
+
+//networking!
+#ifndef NETWORKING_H
+#define NETWORKING_H
+
+#define BUFFER_SIZE 256
+#define PORT "9005"
+#define TEST_IP "127.0.0.1"
 
 void error_check(int i, char *s);
 int server_setup();
@@ -56,4 +59,3 @@ void print_screen(char** screen);
 char** terminal_line();
 char** screen_shift(char** init_screen);
 int screen_move(char** screen);
-char** scroll(char**init_screen, char*msg);

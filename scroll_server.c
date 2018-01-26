@@ -1,7 +1,4 @@
 #include "headers.h"
-#define READ 0
-#define WRITE 1
-#define MY_KEY 1001
 
 void subserver(int, int);
 

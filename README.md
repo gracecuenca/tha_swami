@@ -4,7 +4,7 @@ Presented by team tha_swami: Jack Cruse, Grace Cuenca, and Naotaka Kinoshita (pe
 ### The Project
 Our mini arcade consists of three features:
 1. Wack-a-Mole
-2. Scrolling Text 
+2. Scrolling Text
 3. Memory Matrix
 
 #### 1. Wack-a-Mole
@@ -65,7 +65,7 @@ Client(s): Max number of clients: 2
 $ ./scroll_client [ip]
 ```
 
-To run memory matrix (FILL IN)
+To run memory matrix
 
 Server:
 
@@ -76,5 +76,5 @@ $ ./memory_server
 Client(s): Must be exactly 4 clients
 
 ```
-$ ./memory_client
+$ ./memory_client [ip]
 ```
