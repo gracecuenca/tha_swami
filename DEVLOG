@@ -80,10 +80,14 @@ IT WORKS
  - need to verify that it works over networks
  - located at color_server and color_client
 
- graceC -- 2018-01-25
- scrolling server kinda 
+graceC -- 2018-01-25
+scrolling server kinda 
+
 naotakaK -- 2018-01-25 23:14
 Scrolling text works for 2 clients but not more???
 
 jackC -- 2018-01-26 8:21
 Memory Matrix works but weary of how it treats exiting.
+
+graceC -- 2018-01-26 8:25
+Testing, cleanup, scrolling 
