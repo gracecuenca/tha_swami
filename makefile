@@ -21,8 +21,8 @@ scroll_server: scroll_server.o networking.o headers.h
 scroll_client.o: scroll_client.c headers.h
 	gcc -c scroll_client.c
 
-scroll_client: scroll_client.o scroll_text.o networking.o headers.h
-	gcc -o scroll_client scroll_client.o scroll_text.o networking.o
+scroll_client: scroll_client.o scroll_func.o networking.o headers.h
+	gcc -o scroll_client scroll_client.o scroll_func.o networking.o
 
 memory_server.o: memory_server.c headers.h
 	gcc -c memory_server.c
@@ -42,8 +42,8 @@ term_col.o: term_col.c headers.h
 networking.o: networking.c headers.h
 	gcc -c networking.c
 
-scroll_text.o: scroll_text.c headers.h
-	gcc -c scroll_text.c
+scroll_func.o: scroll_func.c headers.h
+	gcc -c scroll_func.c
 
 clean:
 	rm *.o
