@@ -18,7 +18,7 @@ When the user hits the enter key on a client that has a mole, the mole will move
 In our implementation of scrolling text, all clients connected to a server will receive a message that scrolls from one client to the other, in the order that they connected to the server. The message can be anything from a 'hi' to a more complex image created by characters.
 
 #### 3. Memory Matrix
-In our implementation of memory matrix, all clients connected to the server will have a designated color that the terminal will change to. Upon beginning the game, the server will randomly select a client to 'flash', indicating that it has to be hit. The game progressively gets harder as more and more clients are randomly selected, as the user has to hit enter on the clients in the order that they were flashed.
+In our implementation of memory matrix, all clients connected to the server will have a designated color that the terminal will change to. Upon beginning the game, the server will randomly select a client to 'flash', indicating that it has to be hit according to the prompt given in the client window. The game progressively gets harder as more and more clients are randomly selected, as the user has to hit enter on the clients in the order that they were flashed. Users must type y and then enter on the window they want to hit as the correct one, and type n and enter on the other three windows before proceeding to the next correct window.
 
 ### Running the Arcade
 First, clone the repo
@@ -70,11 +70,11 @@ To run memory matrix (FILL IN)
 Server:
 
 ```
-$ ./
+$ ./memory_server
 ```
 
-Client(s):
+Client(s): Must be exactly 4 clients
 
 ```
-$ ./
+$ ./memory_client
 ```
