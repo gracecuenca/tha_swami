@@ -13,17 +13,19 @@ int main(int argc, char **argv) {
     server_socket = client_setup( TEST_IP );
 
   write(server_socket, "hi", sizeof("hi"));
-  read(server_socket, msg, sizeof(msg));
-
+  read(server_socket, &msg, sizeof(msg));
+  if (!strcmp(msg, "")) {
+    write(server_socket, "", sizeof(""));
+    read(server_socket, &msg, sizeof(msg));
+  }
   clearscreen();
   char** screen = terminal_line(msg);
 
   while (1) {
-    write(server_socket, buffer, sizeof(buffer));
-    read(server_socket, buffer, sizeof(buffer));
 
     if(screen_move(screen)){
       write(server_socket, "done", sizeof("done"));
+      clearscreen();
     }
 
   }
