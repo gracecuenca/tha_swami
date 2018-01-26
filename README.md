@@ -27,6 +27,12 @@ First, clone the repo
 $ git clone https://github.com/gracecuenca/tha_swami.git
 ```
 
+CD into the repo
+
+```
+$ cd tha_swami
+```
+
 To compile all the files needed to run every game, first run
 
 ```
