@@ -9,8 +9,8 @@ color_server: color_server.o networking.o headers.h
 color_client.o: color_client.c headers.h
 	gcc -c color_client.c
 
-color_client: color_client.o term_col.o networking.o headers.h
-	gcc -o color_client color_client.o term_col.o networking.o
+color_client: color_client.o color_func.o networking.o headers.h
+	gcc -o color_client color_client.o color_func.o networking.o
 
 scroll_server.o: scroll_server.c headers.h
 	gcc -c scroll_server.c
@@ -33,11 +33,11 @@ memory_server: memory_server.o networking.o headers.h
 matrix_client.o: matrix_client.c headers.h
 	gcc -c matrix_client.c
 
-matrix_client: matrix_client.o term_col.o networking.o headers.h
-	gcc -o matrix_client matrix_client.o term_col.o networking.o
+matrix_client: matrix_client.o color_func.o networking.o headers.h
+	gcc -o matrix_client matrix_client.o color_func.o networking.o
 
-term_col.o: term_col.c headers.h
-	gcc -c term_col.c
+color_func.o: color_func.c headers.h
+	gcc -c color_func.c
 
 networking.o: networking.c headers.h
 	gcc -c networking.c
