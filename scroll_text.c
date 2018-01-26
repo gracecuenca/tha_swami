@@ -29,7 +29,7 @@ void print_screen(char** screen){
   }
 }
 
-char** terminal_line(){
+char** terminal_line(char * msg){
   int num_rows = rows();
   int num_cols = cols();
   char** lines = malloc(num_rows * sizeof(char*));
@@ -39,11 +39,11 @@ char** terminal_line(){
   for(index = 0; index < num_rows; index++){
     lines[index] = malloc(num_cols * sizeof(char*));
     while(i < num_cols - 1){
-      strcat(lines[index], "-");
+      strcat(lines[index], " ");
       i++;
     }
     i=0;
-    strcat(lines[index], "a");
+    strcat(lines[index], &msg[0]);
   }
   //print_screen(lines);
   //add freeing stuff
@@ -54,7 +54,7 @@ char** screen_shift(char** init_screen){
   int row;
   for(row = 0; row < rows(); row++){
     init_screen[row]+=1;
-    strcat(init_screen[row], "-");
+    strcat(init_screen[row], " ");
   }
   clearscreen();
   print_screen(init_screen);

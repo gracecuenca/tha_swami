@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
   read(server_socket, msg, sizeof(msg));
 
   clearscreen();
-  char** screen = terminal_line();
+  char** screen = terminal_line(msg);
 
   while (1) {
     write(server_socket, buffer, sizeof(buffer));
