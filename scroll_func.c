@@ -71,3 +71,27 @@ int screen_move(char** screen){
   }
   return 1;
 }
+
+char** scroll(char**init_screen, char*msg){
+  int row;
+  int col = 0;
+  int i = 0;
+  while(col < cols()){
+    for(row = 0; row < rows(); row++){
+      if(i < strlen(msg)){
+        strcat(init_screen[row], &msg[0]);
+      }
+      else{
+        strcat(init_screen[row], " ");
+      }
+    }
+    i++;
+    msg++;
+    col++;
+    clearscreen();
+    print_screen(init_screen);
+    //sleep(1);
+    usleep(50000);
+  }
+  return init_screen;
+}
