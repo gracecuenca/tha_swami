@@ -18,12 +18,14 @@ int main(int argc, char **argv) {
   while (1) {
     read(server_socket, buffer, sizeof(buffer));
     color = change_color(buffer);
+    /*
     if (getchar() == '\n') {
       write(server_socket, buffer, sizeof(buffer));
     }
     else {
       write(server_socket, "TEST", sizeof("TEST"));
     }
+    */
 
   }
 }
