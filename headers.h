@@ -37,6 +37,8 @@
 #define CLEAR   "\x1b[2J"
 #define WHITE   "\x1b[37m"
 
+#define READ 0
+#define WRITE 1
 
 void error_check(int i, char *s);
 int server_setup();

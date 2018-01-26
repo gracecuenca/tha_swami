@@ -1,6 +1,4 @@
 #include "headers.h"
-#define READ 0
-#define WRITE 1
 
 void subserver(int, int);
 int send_colors(int, char *, char *);

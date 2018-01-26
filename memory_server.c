@@ -11,6 +11,8 @@ static char COLORS[10][10] = {
   //GREY
 };
 int subserver_color_num = 0; //designates color
+int server_to_ss[2 * 4];
+//int ss_to_server[2 * 4];
 
 int main() {
   srand(time(NULL));
@@ -18,8 +20,10 @@ int main() {
   int f;
   int a;
 
-  //even indices are pids
-  //odd indices are the index of colors that are assigned to the pid right before it
+  for (int i = 0; i < 4; i++) {
+    pipe(&server_to_ss[2 * i]);
+  }
+
   int pid_list_shmid = shmget(KEY, 10*sizeof(int), IPC_CREAT | 0666);
   if(pid_list_shmid < 0){
     printf("error in shmget 1\n");
@@ -54,9 +58,11 @@ int main() {
     int client_socket = server_connect(listen_socket);
     f = fork();
     if (f == 0) {
+      close(server_to_ss[2 * subserver_color_num + WRITE]);
       subserver(client_socket);
     }
     else {
+      close(server_to_ss[2 * subserver_color_num + READ]);
       close(client_socket);
     }
     subserver_color_num += 1;
@@ -72,6 +78,14 @@ int main() {
     mem_matrix[i] = pids_list[rand()%4];
     printf("position %d: pid %d\n", i, mem_matrix[i]);
   }
+
+  printf("Sending subservers the signal to begin flashing...\n");
+
+  for (int i = 0; i < 4; i++) {
+    write(server_to_ss[2 * i + WRITE], "FILLER", sizeof("FILLER"));
+  }
+
+  printf("Main server finished\n");
   
 }
 
@@ -116,6 +130,7 @@ void subserver(int client_socket) {
 
   printf("made it here\n");
 
+  read(server_to_ss[2 * subserver_color_num + READ], &buffer, sizeof(buffer));
 
   printf("made it here\n");
 
