@@ -13,6 +13,7 @@
 #include <sys/ipc.h>
 #include <time.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 
 #define KEY 1
 #define KEY2 2
@@ -52,4 +53,4 @@ void clearscreen();
 void print_screen(char** screen);
 char** terminal_line();
 char** screen_shift(char** init_screen);
-char** screen_move(char** screen);
+int screen_move(char** screen);

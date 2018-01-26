@@ -45,14 +45,13 @@ char** terminal_line(){
     i=0;
     strcat(lines[index], "a");
   }
-  print_screen(lines);
+  //print_screen(lines);
   //add freeing stuff
   return lines;
 }
 
 char** screen_shift(char** init_screen){
   int row;
-  char * temp;
   for(row = 0; row < rows(); row++){
     init_screen[row]+=1;
     strcat(init_screen[row], "-");
@@ -63,12 +62,12 @@ char** screen_shift(char** init_screen){
   return init_screen;
 }
 
-char** screen_move(char** screen){
+int screen_move(char** screen){
   int col;
   char** term = screen;
   for(col = 0; col < cols(); col++){
     term = screen_shift(term);
     sleep(1);
   }
-  return term;
+  return 1;
 }
