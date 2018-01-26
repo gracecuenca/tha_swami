@@ -4,8 +4,10 @@ int main(int argc, char **argv) {
 
   int server_socket;
   char buffer[BUFFER_SIZE];
+  char std_in[BUFFER_SIZE]; //stdin
   int shmdt;
   char * color;
+  fd_set read_fds;
   
   if (argc == 2)
     server_socket = client_setup( argv[1]);
@@ -16,16 +18,35 @@ int main(int argc, char **argv) {
   clearscreen();
   
   while (1) {
-    read(server_socket, buffer, sizeof(buffer));
-    color = change_color(buffer);
-    /*
-    if (getchar() == '\n') {
-      write(server_socket, buffer, sizeof(buffer));
-    }
-    else {
-      write(server_socket, "TEST", sizeof("TEST"));
-    }
-    */
 
+    fflush(stdout);
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(server_socket, &read_fds);
+    select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+
+    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      fgets(std_in, sizeof(std_in), stdin);
+
+      //if enter is pressed write current color
+      if (!strcmp(std_in, "\n")) {
+        write(server_socket, buffer, sizeof(buffer));
+      }
+    }
+
+    if (FD_ISSET(server_socket, &read_fds)) {
+      if (read(server_socket, buffer, sizeof(buffer)) == -1) {
+        printf("%s\n", strerror(errno));
+        exit(0);
+      }
+
+      //change color
+      color = change_color(buffer);
+      write(server_socket, "", sizeof(""));
+      if (fflush(stdout) != 0) {
+        printf("%s\n", strerror(errno));
+        exit(0);
+      }
+    }
   }
 }

@@ -53,7 +53,7 @@ int main() {
     f = fork();
     if (f == 0) {
       close(server_to_ss[(2 * subserver_color_num) + WRITE]);
-      close(ss_to_server[2 * subserver_color_num + READ]);
+      close(ss_to_server[(2 * subserver_color_num) + READ]);
       subserver(client_socket);
     }
     else {
@@ -75,16 +75,18 @@ int main() {
 
   for (int i = 0; i < 4; i++) {
     write(server_to_ss[2 * i + WRITE], "FILLER", sizeof("FILLER0"));
-    printf("server made it past init stage %d\n", i);
+    //printf("server made it past init stage %d\n", i);
   }
-  
+
   printf("Sending subservers the flashing signals...\n");
 
   for (int i = 0; i < 10; i++) {
+    sleep(1);
     write(server_to_ss[(2 * mem_matrix[i]) + WRITE], "FILLER", sizeof("FILLER1"));
-    printf("server made it past write stage %d\n", i);
+    //printf("server used pipe index %d\n", (2 * mem_matrix[i]) + WRITE);
+    //printf("server made it past write stage %d\n", i);
     read(ss_to_server[(2 * mem_matrix[i]) + READ], &buffer, sizeof(buffer));
-    printf("server made it past read stage %d\n", i);
+    //printf("server made it past read stage %d\n", i);
   }
 
   printf("Main server finished\n");
@@ -113,30 +115,51 @@ void subserver(int client_socket) {
   printf("subserver %d made it past sending client color\n", subserver_color_num);
 
   read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
+  printf("buffer: %s\n", buffer);
 
   for (int index_of_pattern = 0; index_of_pattern < 10; index_of_pattern++) {
     
     if (mem_matrix[index_of_pattern] == subserver_color_num) {
-      printf("subserver %d triggered the %d read part of the loop\n", subserver_color_num, index_of_pattern);
+      //printf("subserver %d triggered the %d read part of the loop\n", subserver_color_num, index_of_pattern);
       read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
-      printf("subserver %d read from main server during the %d read part of the loop\n", subserver_color_num, index_of_pattern);
+      //printf("subserver %d read from main server during the %d read part of the loop\n", subserver_color_num, index_of_pattern);
       write(client_socket, GREY, sizeof(char *));
-      printf("subserver %d wrote to the client during the %d read part of the loop\n", subserver_color_num, index_of_pattern);
+      //printf("subserver %d wrote to the client during the %d read part of the loop\n", subserver_color_num, index_of_pattern);
     }
 
     printf("subserver %d made it past the %d read part of the loop\n", subserver_color_num, index_of_pattern);
+
+    sleep(1);
     
     if (mem_matrix[index_of_pattern] == subserver_color_num) {
-      printf("subserver %d triggered the %d write part of the loop\n", subserver_color_num, index_of_pattern);
+      //printf("subserver %d triggered the %d write part of the loop\n", subserver_color_num, index_of_pattern);
       write(client_socket, color, sizeof(char *));
-      printf("subserver %d wrote to the client during the %d write part of the loop\n", subserver_color_num, index_of_pattern);
+      //printf("subserver %d wrote to the client during the %d write part of the loop\n", subserver_color_num, index_of_pattern);
       write(ss_to_server[(2 * subserver_color_num) + WRITE], "FILLER2", sizeof("FILLER2"));
-      printf("subserver %d wrote to main server during the %d write part of the loop\n", subserver_color_num, index_of_pattern);
+      //printf("subserver %d wrote to main server during the %d write part of the loop\n", subserver_color_num, index_of_pattern);
     }
     
     printf("subserver %d made it past the %d write part of the loop\n", subserver_color_num, index_of_pattern);
     
   }
+
+  for (int i = 0; i < 10; i++) {
+    write(client_socket, color, sizeof(char *));
+    read(client_socket, buffer, sizeof(buffer));
+
+    if (!strcmp(buffer, "SI")) {
+      player_choice[i] = subserver_color_num;
+    }
+
+    sleep(2);
+
+    if (player_choice[i] != mem_matrix[i]) {
+      printf("GAME OVER\n");
+      exit(0);
+    }
+  }
+
+    
 
   printf("subserver %d made it past the flash stage\n", subserver_color_num);
 
