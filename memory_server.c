@@ -80,7 +80,7 @@ int main() {
     //printf("position %d: value %d\n", i, mem_matrix[i]);
   }
 
-  for (int max_pos = 1; max_pos <= 10; max_pos++) {
+  for (int max_pos = 1; max_pos <= 5; max_pos++) {
     
     //printf("Sending subservers the signal to begin flashing...\n");
 
@@ -167,7 +167,7 @@ void subserver(int client_socket) {
 
 
   
-  for (int index_of_pattern = 1; index_of_pattern <= 10; index_of_pattern++) {
+  for (int index_of_pattern = 1; index_of_pattern <= 5; index_of_pattern++) {
 
 
     read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
