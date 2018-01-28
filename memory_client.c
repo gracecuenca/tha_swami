@@ -26,8 +26,7 @@ int main(int argc, char **argv) {
   write(server_socket, "SETUP", sizeof("SETUP"));
   clearscreen();
   
-  while (1) {
-    read(server_socket, &buffer, sizeof(buffer));
+  while ( (read(server_socket, &buffer, sizeof(buffer)) != -1) ) {
     printf("buffer val: %s\n", buffer);
     
     if (!strcmp(buffer, "PUSH")) {
