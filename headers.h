@@ -14,6 +14,7 @@
 #include <time.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 #define KEY 1
 #define KEY2 2
