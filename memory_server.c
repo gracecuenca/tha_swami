@@ -19,7 +19,7 @@ int mem_matrix[10];
 static void sighandler(int i) {
   if (i == SIGINT) {
     //printf("sighandler triggered\n");
-    write(client_socket, "END", sizeof("END"));   
+    write(client_socket, "END", sizeof("END"));
     close(client_socket);
     exit(0);
   }
@@ -43,19 +43,22 @@ int main() {
   int listen_socket;
   int f;
   int a;
+  int i;
+  int j;
+  int max_pos;
   char buffer[BUFFER_SIZE];
   pid_t pids_list[4];
 
   signal(SIGINT, sighandler);
 
-  for (int i = 0; i < 4; i++) {
+  for (i = 0; i < 4; i++) {
     pipe(&server_to_ss[2 * i]);
     pipe(&ss_to_server[2 * i]);
   }
 
   listen_socket = server_setup();
 
-  for (int i = 0; i < 10; i++) {
+  for (i = 0; i < 10; i++) {
     mem_matrix[i] = rand()%4;
     //printf("position %d: value %d\n", i, mem_matrix[i]);
   }
@@ -79,20 +82,20 @@ int main() {
   sleep(1);
 
 
-  for (int max_pos = 1; max_pos <= 10; max_pos++) {
-    
+  for (max_pos = 1; max_pos <= 10; max_pos++) {
+
     //printf("Sending subservers the signal to begin flashing...\n");
 
     sleep(3);
-    
-    for (int i = 0; i < 4; i++) {
+
+    for (i = 0; i < 4; i++) {
       write(server_to_ss[2 * i + WRITE], "FILLER", sizeof("FILLER0"));
       //printf("server made it past init stage %d\n", i);
     }
-    
+
     //printf("Sending subservers the flashing signals...\n");
-    
-    for (int i = 0; i < max_pos; i++) {
+
+    for (i = 0; i < max_pos; i++) {
       sleep(1);
       write(server_to_ss[(2 * mem_matrix[i]) + WRITE], "FILLER", sizeof("FILLER1"));
       //printf("server used pipe index %d\n", (2 * mem_matrix[i]) + WRITE);
@@ -100,25 +103,25 @@ int main() {
       read(ss_to_server[(2 * mem_matrix[i]) + READ], &buffer, sizeof(buffer));
       //printf("server made it past read stage %d\n", i);
     }
-    
+
     //printf("Sending subservers the signal to begin receiving input...\n");
-    
-    for (int i = 0; i < 4; i++) {
+
+    for (i = 0; i < 4; i++) {
       write(server_to_ss[2 * i + WRITE], "FILLER0", sizeof("FILLER0"));
       //printf("server made it past init stage %d\n", i);
     }
-    
+
     //printf("Checking client's response...\n");
-  
-    for (int i = 0; i < max_pos; i++) {
+
+    for (i = 0; i < max_pos; i++) {
       sleep(1);
-      
+
       write(server_to_ss[(2 * 0) + WRITE], "FILLER1", sizeof("FILLER1"));
       write(server_to_ss[(2 * 1) + WRITE], "FILLER1", sizeof("FILLER1"));
       write(server_to_ss[(2 * 2) + WRITE], "FILLER1", sizeof("FILLER1"));
       write(server_to_ss[(2 * 3) + WRITE], "FILLER1", sizeof("FILLER1"));
-      
-      for (int j = 0; j < 4; j++) {
+
+      for (j = 0; j < 4; j++) {
 	read(ss_to_server[(2 * j) + READ], &buffer, sizeof(buffer));
 	if (j == mem_matrix[i]) {
 	  if (strcmp(buffer, "y")) {
@@ -139,14 +142,14 @@ int main() {
 	  }
 	}
       }
-    
+
       printf("Correct... Continue\n");
       //printf("server made it past read stage %d\n", i);
     }
   }
 
   printf("You Win!\n");
-  
+
 }
 
 
@@ -155,14 +158,17 @@ int main() {
 
 void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
+  int index_of_pattern;
+  int i;
+  int j;
 
   /*
   int mem_matrix_shmid = shmget(KEY2, 10*sizeof(int), 0666);
   int * mem_matrix = shmat(mem_matrix_shmid, 0, 0);
   */
-  
+
   char * color = COLORS[subserver_color_num];
-  
+
   read(client_socket, &buffer, sizeof(buffer));
   printf("[subserver %d] received: [%s]\n", getpid(), buffer);
   write(client_socket, color, sizeof(char *));
@@ -170,15 +176,15 @@ void subserver(int client_socket) {
   //printf("subserver %d made it past sending client color\n", subserver_color_num);
 
 
-  
-  for (int index_of_pattern = 1; index_of_pattern <= 10; index_of_pattern++) {
+
+  for (index_of_pattern = 1; index_of_pattern <= 10; index_of_pattern++) {
 
 
     read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
     //printf("buffer: %s\n", buffer);
-    
-    
-    for (int i = 0; i < index_of_pattern; i++) {
+
+
+    for (i = 0; i < index_of_pattern; i++) {
       if (mem_matrix[i] == subserver_color_num) {
 	//printf("subserver %d triggered the %d read part of the loop\n", subserver_color_num, i);
 	read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
@@ -186,11 +192,11 @@ void subserver(int client_socket) {
 	write(client_socket, GREY, sizeof(char *));
 	//printf("subserver %d wrote to the client during the %d read part of the loop\n", subserver_color_num, i);
       }
-      
+
       //printf("subserver %d made it past the %d read part of the loop\n", subserver_color_num, i);
-      
+
       sleep(1);
-      
+
       if (mem_matrix[i] == subserver_color_num) {
 	//printf("subserver %d triggered the %d write part of the loop\n", subserver_color_num, i);
 	write(client_socket, color, sizeof(char *));
@@ -198,39 +204,36 @@ void subserver(int client_socket) {
 	write(ss_to_server[(2 * subserver_color_num) + WRITE], "FILLER2", sizeof("FILLER2"));
 	//printf("subserver %d wrote to main server during the %d write part of the loop\n", subserver_color_num, i);
       }
-      
+
       //printf("subserver %d made it past the %d write part of the loop\n", subserver_color_num, i);
-      
+
     }
 
     read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
     //printf("subserver %d made it past the second init point\n", subserver_color_num);
     //printf("buffer val: %s\n", buffer);
-    
-    for (int j = 0; j < index_of_pattern; j++) {
-      
+
+    for (j = 0; j < index_of_pattern; j++) {
+
       read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
       //printf("subserver %d read from the server during the %d loop\n", subserver_color_num, j);
-      
+
       write(client_socket, "PUSH", sizeof("PUSH"));
       //printf("subserver %d wrote to the client during the %d loop\n", subserver_color_num, j);
-      
+
       read(client_socket, &buffer, sizeof(buffer));
       //printf("subserver %d read from the client during the %d loop\n", subserver_color_num, j);
       //printf("buffer: %s\n", buffer);
-      
+
       write(ss_to_server[(2 * subserver_color_num) + WRITE], buffer, sizeof(buffer));
       //printf("subserver %d wrote to main server during the %d loop\n", subserver_color_num, j);
-    
+
     }
   }
 
   write(client_socket, "END", sizeof("END"));
-  
+
   close(client_socket);
   printf("closed client socket\n");
   exit(0);
 }
-
-
-
