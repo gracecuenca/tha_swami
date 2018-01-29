@@ -45,6 +45,7 @@ int main() {
   int a;
   int i;
   int j;
+  int h;
   int max_pos;
   char buffer[BUFFER_SIZE];
   pid_t pids_list[4];
@@ -126,7 +127,7 @@ int main() {
 	if (j == mem_matrix[i]) {
 	  if (strcmp(buffer, "y")) {
 	    printf("GAME OVER\n");
-	    for (int h = 0; h < 4; h++) {
+	    for (h = 0; h < 4; h++) {
 	      kill(pids_list[h], SIGINT);
 	    }
 	    exit(0);
@@ -135,7 +136,7 @@ int main() {
 	else {
 	  if (!strcmp(buffer, "y")) {
 	    printf("GAME OVER\n");
-	    for (int h = 0; h < 4; h++) {
+	    for (h = 0; h < 4; h++) {
 	      kill(pids_list[h], SIGINT);
 	    }
 	    exit(0);
