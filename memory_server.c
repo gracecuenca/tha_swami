@@ -14,6 +14,7 @@ int subserver_color_num = 0; //designates color
 int server_to_ss[2 * 4];
 int ss_to_server[2 * 4];
 int client_socket;
+int mem_matrix[10];
 
 static void sighandler(int i) {
   if (i == SIGINT) {
@@ -23,6 +24,19 @@ static void sighandler(int i) {
     exit(0);
   }
 }
+
+/*
+  int mem_matrix_shmid = shmget(KEY2, 10*sizeof(int), IPC_CREAT | 0666);
+  if(mem_matrix_shmid < 0){
+    printf("error in shmget 2\n");
+  }
+
+  int* mem_matrix = shmat(mem_matrix_shmid, 0, 0);
+  if((int)mem_matrix < 0){
+    printf("error in shmat 2\n");
+  }
+*/
+
 
 int main() {
   srand(time(NULL));
@@ -39,18 +53,12 @@ int main() {
     pipe(&ss_to_server[2 * i]);
   }
 
-  int mem_matrix_shmid = shmget(KEY2, 10*sizeof(int), IPC_CREAT | 0666);
-  if(mem_matrix_shmid < 0){
-    printf("error in shmget 2\n");
-  }
-
-  int* mem_matrix = shmat(mem_matrix_shmid, 0, 0);
-  if((int)mem_matrix < 0){
-    printf("error in shmat 2\n");
-  }
-
   listen_socket = server_setup();
 
+  for (int i = 0; i < 10; i++) {
+    mem_matrix[i] = rand()%4;
+    //printf("position %d: value %d\n", i, mem_matrix[i]);
+  }
   while (subserver_color_num < 4) {
     client_socket = server_connect(listen_socket);
     f = fork();
@@ -70,10 +78,6 @@ int main() {
 
   sleep(1);
 
-  for (int i = 0; i < 10; i++) {
-    mem_matrix[i] = rand()%4;
-    //printf("position %d: value %d\n", i, mem_matrix[i]);
-  }
 
   for (int max_pos = 1; max_pos <= 3; max_pos++) {
     
@@ -152,9 +156,11 @@ int main() {
 void subserver(int client_socket) {
   char buffer[BUFFER_SIZE];
 
+  /*
   int mem_matrix_shmid = shmget(KEY2, 10*sizeof(int), 0666);
   int * mem_matrix = shmat(mem_matrix_shmid, 0, 0);
-
+  */
+  
   char * color = COLORS[subserver_color_num];
   
   read(client_socket, &buffer, sizeof(buffer));
