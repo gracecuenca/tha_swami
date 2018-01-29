@@ -13,10 +13,13 @@ static char COLORS[10][10] = {
 int subserver_color_num = 0; //designates color
 int server_to_ss[2 * 4];
 int ss_to_server[2 * 4];
+int client_socket;
 
 static void sighandler(int i) {
   if (i == SIGINT) {
-    //close(client_socket);
+    //printf("sighandler triggered\n");
+    write(client_socket, "END", sizeof("END"));   
+    close(client_socket);
     exit(0);
   }
 }
@@ -27,6 +30,7 @@ int main() {
   int f;
   int a;
   char buffer[BUFFER_SIZE];
+  pid_t pids_list[4];
 
   signal(SIGINT, sighandler);
 
@@ -48,9 +52,10 @@ int main() {
   listen_socket = server_setup();
 
   while (subserver_color_num < 4) {
-    int client_socket = server_connect(listen_socket);
+    client_socket = server_connect(listen_socket);
     f = fork();
     if (f == 0) {
+      pids_list[subserver_color_num] = getpid();
       close(server_to_ss[(2 * subserver_color_num) + WRITE]);
       close(ss_to_server[(2 * subserver_color_num) + READ]);
       subserver(client_socket);
@@ -70,7 +75,7 @@ int main() {
     //printf("position %d: value %d\n", i, mem_matrix[i]);
   }
 
-  for (int max_pos = 1; max_pos <= 10; max_pos++) {
+  for (int max_pos = 1; max_pos <= 3; max_pos++) {
     
     //printf("Sending subservers the signal to begin flashing...\n");
 
@@ -114,12 +119,18 @@ int main() {
 	if (j == mem_matrix[i]) {
 	  if (strcmp(buffer, "y")) {
 	    printf("GAME OVER\n");
+	    for (int h = 0; h < 4; h++) {
+	      kill(pids_list[h], SIGINT);
+	    }
 	    exit(0);
 	  }
 	}
 	else {
 	  if (!strcmp(buffer, "y")) {
 	    printf("GAME OVER\n");
+	    for (int h = 0; h < 4; h++) {
+	      kill(pids_list[h], SIGINT);
+	    }
 	    exit(0);
 	  }
 	}
@@ -154,7 +165,7 @@ void subserver(int client_socket) {
 
 
   
-  for (int index_of_pattern = 1; index_of_pattern <= 10; index_of_pattern++) {
+  for (int index_of_pattern = 1; index_of_pattern <= 3; index_of_pattern++) {
 
 
     read(server_to_ss[(2 * subserver_color_num) + READ], &buffer, sizeof(buffer));
@@ -208,7 +219,7 @@ void subserver(int client_socket) {
     }
   }
 
-
+  write(client_socket, "END", sizeof("END"));
   
   close(client_socket);
   printf("closed client socket\n");

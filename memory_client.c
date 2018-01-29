@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   char buffer[BUFFER_SIZE];
   char std_in[BUFFER_SIZE]; //stdin
   int shmdt;
-  char * color;
+  char color[32];
   fd_set read_fds;
 
   signal(SIGINT, sighandler);
@@ -27,19 +27,29 @@ int main(int argc, char **argv) {
   clearscreen();
   
   while ( (read(server_socket, &buffer, sizeof(buffer)) != -1) ) {
-    printf("buffer val: %s\n", buffer);
+    //printf("buffer val: %s\n", buffer);
+
+    if (!strcmp(buffer, "END")) {
+      close(server_socket);
+      printf("closed client socket\n");
+      exit(0);
+    }
     
-    if (!strcmp(buffer, "PUSH")) {
+    else if (!strcmp(buffer, "PUSH")) {
       printf("enter y or n: ");
       scanf("%s", buffer);
       printf("buffer val: %s", buffer);
       write(server_socket, buffer, sizeof(buffer));
+      change_color(color);
     }
 
     else {
       //change color
-      color = change_color(buffer);
+      strcpy(color, buffer);
+      change_color(buffer);
+      //printf("color: %s\n", color);
     }
 
   }
+
 }
